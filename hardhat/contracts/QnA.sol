@@ -48,6 +48,10 @@ contract QnA {
         token = QaCoin(tokenAddress);
     }
 
+    function questionLength() external view returns (uint256) {
+        return questions.length;
+    }
+
     function postQuestion(string calldata content, uint256 bounty) external {
         require(
             token.transferFrom(msg.sender, address(this), bounty),
