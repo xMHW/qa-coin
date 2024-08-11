@@ -24,6 +24,12 @@ export const QnAAbi = [
       },
       {
         indexed: false,
+        internalType: 'uint256',
+        name: 'answerId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
         internalType: 'address',
         name: 'replier',
         type: 'address',
@@ -33,6 +39,12 @@ export const QnAAbi = [
         internalType: 'string',
         name: 'content',
         type: 'string',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'reserve',
+        type: 'uint256',
       },
     ],
     name: 'AnswerPosted',
@@ -58,12 +70,6 @@ export const QnAAbi = [
         internalType: 'address',
         name: 'voter',
         type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'tokens',
-        type: 'uint256',
       },
     ],
     name: 'AnswerUpvoted',
@@ -93,7 +99,7 @@ export const QnAAbi = [
       {
         indexed: false,
         internalType: 'uint256',
-        name: 'bounty',
+        name: 'reserve',
         type: 'uint256',
       },
     ],
@@ -114,12 +120,6 @@ export const QnAAbi = [
         internalType: 'address',
         name: 'voter',
         type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'tokens',
-        type: 'uint256',
       },
     ],
     name: 'QuestionUpvoted',
@@ -145,6 +145,44 @@ export const QnAAbi = [
         name: '',
         type: 'uint256',
       },
+    ],
+    name: 'answerUpvotesOfQuestion',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    name: 'answerUpvotesOfQuestionSet',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
       {
         internalType: 'uint256',
         name: '',
@@ -153,6 +191,11 @@ export const QnAAbi = [
     ],
     name: 'answers',
     outputs: [
+      {
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
       {
         internalType: 'address',
         name: 'replier',
@@ -170,8 +213,13 @@ export const QnAAbi = [
       },
       {
         internalType: 'uint256',
-        name: 'lastUpvoted',
+        name: 'reserve',
         type: 'uint256',
+      },
+      {
+        internalType: 'bool',
+        name: 'rewardClaimed',
+        type: 'bool',
       },
     ],
     stateMutability: 'view',
@@ -184,15 +232,13 @@ export const QnAAbi = [
         name: 'questionId',
         type: 'uint256',
       },
+      {
+        internalType: 'uint256',
+        name: 'answerId',
+        type: 'uint256',
+      },
     ],
-    name: 'claimBounty',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'claimParticipationRewards',
+    name: 'claimRewardAnswer',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -200,12 +246,19 @@ export const QnAAbi = [
   {
     inputs: [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
+        internalType: 'uint256',
+        name: 'questionId',
+        type: 'uint256',
       },
     ],
-    name: 'participationReward',
+    name: 'claimRewardQuestion',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'nextAnswerId',
     outputs: [
       {
         internalType: 'uint256',
@@ -228,6 +281,11 @@ export const QnAAbi = [
         name: 'content',
         type: 'string',
       },
+      {
+        internalType: 'uint256',
+        name: 'tokens',
+        type: 'uint256',
+      },
     ],
     name: 'postAnswer',
     outputs: [],
@@ -243,7 +301,7 @@ export const QnAAbi = [
       },
       {
         internalType: 'uint256',
-        name: 'bounty',
+        name: 'reserve',
         type: 'uint256',
       },
     ],
@@ -276,6 +334,11 @@ export const QnAAbi = [
     name: 'questions',
     outputs: [
       {
+        internalType: 'uint256',
+        name: 'id',
+        type: 'uint256',
+      },
+      {
         internalType: 'address',
         name: 'asker',
         type: 'address',
@@ -287,7 +350,7 @@ export const QnAAbi = [
       },
       {
         internalType: 'uint256',
-        name: 'bounty',
+        name: 'reserve',
         type: 'uint256',
       },
       {
@@ -297,7 +360,7 @@ export const QnAAbi = [
       },
       {
         internalType: 'bool',
-        name: 'bountyClaimed',
+        name: 'rewardClaimed',
         type: 'bool',
       },
       {
@@ -310,8 +373,14 @@ export const QnAAbi = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'rewardClaimDeadline',
+    inputs: [
+      {
+        internalType: 'address',
+        name: '',
+        type: 'address',
+      },
+    ],
+    name: 'recentUpvoteRewardTime',
     outputs: [
       {
         internalType: 'uint256',
@@ -347,11 +416,6 @@ export const QnAAbi = [
         name: 'answerId',
         type: 'uint256',
       },
-      {
-        internalType: 'uint256',
-        name: 'tokens',
-        type: 'uint256',
-      },
     ],
     name: 'upvoteAnswer',
     outputs: [],
@@ -359,15 +423,23 @@ export const QnAAbi = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'upvoteDeadline',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
       {
         internalType: 'uint256',
         name: 'questionId',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'tokens',
         type: 'uint256',
       },
     ],

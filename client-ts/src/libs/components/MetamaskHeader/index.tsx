@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import { Typography } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Button, Typography } from '@mui/material';
 import { useWeb3React } from '@web3-react/core';
 import { connectors } from '../../connectors';
 import { Contract } from 'ethers';
@@ -18,6 +18,7 @@ interface MetamaskHeaderProps {
 const MetamaskHeader = ({ QaCoinContract }: MetamaskHeaderProps) => {
   const { account, chainId, activate, active, deactivate } = useWeb3React();
   const [balance, setBalance] = useRecoilState(balanceState);
+  const [mintLoading, setMintLoading] = useState<boolean>(false);
   const handleConnectWallet = () => {
     window.localStorage.setItem('provider', 'injected');
     activate(connectors.injected);
@@ -29,25 +30,27 @@ const MetamaskHeader = ({ QaCoinContract }: MetamaskHeaderProps) => {
 
   const mintToken = async () => {
     if (!QaCoinContract || !account) return;
+    setMintLoading(true);
     const tx = await QaCoinContract.mintTokens();
-    console.log(tx);
     await tx.wait();
+    setMintLoading(false);
   };
 
   useEffect(() => {
+    if (mintLoading) return;
     if (QaCoinContract && account) {
       const fetchBalance = async () => {
         try {
-          const balance = await QaCoinContract.balanceOf(account);
-          setBalance(formatEther(balance));
+          const rawBalance = await QaCoinContract.balanceOf(account);
+          setBalance(formatEther(rawBalance));
         } catch (e) {
-          console.log(e);
+          console.error(e, 'Can not fetch balance');
           setBalance(null);
         }
       };
       fetchBalance();
     }
-  }, [QaCoinContract, account, setBalance]);
+  }, [QaCoinContract, account, setBalance, mintLoading]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -64,12 +67,12 @@ const MetamaskHeader = ({ QaCoinContract }: MetamaskHeaderProps) => {
             </>
           )}
           {chainId ? <Typography sx={{ mr: 2 }}>Connected network: {chainId?.toString()}</Typography> : null}
-          {balance !== '0' ? (
+          {balance !== '0.0' ? (
             <Typography>Balance: {balance}</Typography>
           ) : account ? (
-            <Button color="inherit" onClick={mintToken}>
+            <LoadingButton loading={mintLoading} color="inherit" onClick={mintToken}>
               Mint Token
-            </Button>
+            </LoadingButton>
           ) : null}
           {active ? (
             <>
