@@ -1,11 +1,13 @@
 import { useWeb3React } from '@web3-react/core';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Contract, ethers } from 'ethers';
-import { Box, Button, IconButton, InputAdornment, InputBase, Paper, Slider, TextField } from '@mui/material';
+import { Box, Button, IconButton, InputAdornment, InputBase, Paper, TextField } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { formatEther } from 'ethers/lib/utils';
 import { Question } from '../../types/Question';
 import QuestionList from '../QuestionList';
+import QuestionModal from '../QuestionModal';
 
 interface QnAProps {
   QnAcontract: Contract | null;
@@ -15,28 +17,41 @@ interface QnAProps {
 const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
   const { account } = useWeb3React();
   const [question, setQuestion] = useState<string>('');
+  const [postLoading, setPostLoading] = useState<boolean>(false);
   const [claimAmount, setClaimAmount] = useState<number>(100);
   const [claimAmountError, setClaimAmountError] = useState<boolean>(false);
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [modalQuestion, setModalQuestion] = useState<Question | null>(null);
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
 
-  const handleFetchQuestions = async () => {
+  const handleFetchQuestions = useCallback(async () => {
     if (!QnAcontract) return;
-    const questionsLength = await QnAcontract.questionLength();
-    setQuestions([]);
-    for (let i = 0; i < questionsLength.toNumber(); i++) {
-      const question = await QnAcontract.questions(i);
-      setQuestions(prev => [
-        ...prev,
-        {
-          content: question.content,
-          claimAmount: formatEther(question.bounty),
-          upvotes: question.upvotes.toNumber(),
-          createdAt: new Date(question.createdAt.toNumber() * 1000).toLocaleString(),
-          asker: question.asker,
-        },
-      ]);
+    try {
+      const questionsLength = await QnAcontract.questionLength();
+      setQuestions([]);
+      for (let i = 0; i < questionsLength.toNumber(); i++) {
+        const question = await QnAcontract.questions(i);
+        setQuestions(prev => [
+          ...prev,
+          {
+            id: question.id.toNumber(),
+            content: question.content,
+            claimAmount: formatEther(question.bounty),
+            upvotes: question.upvotes.toNumber(),
+            createdAt: new Date(question.createdAt.toNumber() * 1000).toLocaleString(),
+            asker: question.asker,
+            isMine: account === question.asker,
+          },
+        ]);
+      }
+    } catch (e) {
+      console.error(e, "Can't fetch questions");
     }
-  };
+  }, [QnAcontract, account]);
+
+  useEffect(() => {
+    handleFetchQuestions();
+  }, [QnAcontract, handleFetchQuestions]);
 
   const handleClaimAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const amount = parseInt(e.target.value);
@@ -50,6 +65,7 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
 
   const handlePostQuestion = async () => {
     if (!QnAcontract || !QaCoinContract || !account || !question || claimAmountError) return;
+    setPostLoading(true);
     const claimAmountBigNumber = ethers.utils.parseEther(claimAmount.toString());
     const allowance = await QaCoinContract.allowance(account, QnAcontract.address);
     console.log(formatEther(allowance), 'allowance');
@@ -59,7 +75,14 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
     }
     const tx2 = await QnAcontract.postQuestion(question, claimAmountBigNumber);
     await tx2.wait();
+    setPostLoading(false);
   };
+
+  const handleQuestionClick = (question: Question) => {
+    setModalQuestion(question);
+    setModalOpen(true);
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Button sx={{ mt: 5, width: 200 }} color="inherit" variant="outlined" onClick={handleFetchQuestions}>
@@ -90,12 +113,26 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
             error={claimAmountError}
             helperText={'Amount must be 100~1000'}
           />
-          <Button sx={{ width: 200 }} color="secondary" variant="outlined" onClick={handlePostQuestion}>
+          <LoadingButton
+            sx={{ width: 200 }}
+            color="secondary"
+            variant="outlined"
+            onClick={handlePostQuestion}
+            loading={postLoading}
+          >
             Post Question
-          </Button>
+          </LoadingButton>
         </Box>
       </Box>
-      <QuestionList questions={questions} />
+      <QuestionList questions={questions} handleQuestionClick={handleQuestionClick} />
+      <QuestionModal
+        open={modalOpen}
+        onClose={() => {
+          setModalOpen(false);
+          setModalQuestion(null);
+        }}
+        question={modalQuestion}
+      />
     </Box>
   );
 };

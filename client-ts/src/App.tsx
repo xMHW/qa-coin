@@ -14,10 +14,11 @@ function App() {
   const { activate, library } = useWeb3React();
   const [QnAcontract, setQnAContract] = useState<Contract | null>(null);
   const [QaCoinContract, setQaCoinContract] = useState<Contract | null>(null);
+
   useEffect(() => {
     const provider = window.localStorage.getItem('provider');
     if (provider) activate(connectors[provider]);
-  }, []);
+  }, [activate]);
 
   useEffect(() => {
     const web3Provider = library?.getSigner();

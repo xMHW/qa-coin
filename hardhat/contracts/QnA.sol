@@ -7,36 +7,47 @@ contract QnA {
     QaCoin public token;
 
     struct Question {
+        uint256 id;
         address asker;
         string content;
-        uint256 bounty;
+        uint256 reserve;
         uint256 createdAt;
-        bool bountyClaimed;
-        uint256 upvotes; // New field to track upvotes
+        bool rewardClaimed;
+        uint256 upvotes;
     }
 
     struct Answer {
+        uint256 id;
         address replier;
         string content;
         uint256 upvotes;
-        uint256 lastUpvoted;
+        uint256 reserve;
+        bool rewardClaimed;
     }
 
-    Question[] public questions;
-    mapping(uint256 => Answer[]) public answers;
-    mapping(address => uint256) public participationReward;
+    struct Vote {
+        address voter;
+        uint256 tokens;
+        bool rewardClaimed;
+    }
 
-    uint256 public answerDeadline = 3 days;
-    uint256 public rewardClaimDeadline = 30 days;
+    uint256 public nextAnswerId;
+    Question[] public questions;
+    mapping(uint256 => mapping(uint256 => Answer)) public answers;
+    mapping(uint256 => mapping(address => Vote)) public questionVotes;
+    mapping(uint256 => mapping(address => Vote)) public answerVotes;
+
+    uint256 public upvoteDeadline = 3 days;
+    uint256 public answerDeadline = 7 days;
 
     event QuestionPosted(
         uint256 questionId,
         address asker,
         string content,
-        uint256 bounty
+        uint256 reserve 
     );
     event QuestionUpvoted(uint256 questionId, address voter, uint256 tokens);
-    event AnswerPosted(uint256 questionId, address replier, string content);
+    event AnswerPosted(uint256 questionId, uint256 answerId, address replier, string content, uint256 reserve);
     event AnswerUpvoted(
         uint256 questionId,
         uint256 answerId,
@@ -52,35 +63,45 @@ contract QnA {
         return questions.length;
     }
 
-    function postQuestion(string calldata content, uint256 bounty) external {
+    function postQuestion(string calldata content, uint256 reserve) external {
         require(
-            token.transferFrom(msg.sender, address(this), bounty),
+            token.transferFrom(msg.sender, address(this), reserve),
             "Failed to transfer tokens"
         );
         uint256 id = questions.length;
         questions.push(
-            Question(msg.sender, content, bounty, block.timestamp, false, 0)
+            Question(id, msg.sender, content, reserve, block.timestamp, false, 0)
         );
-        emit QuestionPosted(id, msg.sender, content, bounty);
+        emit QuestionPosted(id, msg.sender, content, reserve);
     }
 
     function upvoteQuestion(uint256 questionId, uint256 tokens) external {
+        require(
+            block.timestamp <= questions[questionId].createdAt + upvoteDeadline,
+            "Voting deadline has passed"
+        );
         require(
             token.transferFrom(msg.sender, address(this), tokens),
             "Failed to transfer tokens"
         );
         Question storage question = questions[questionId];
         question.upvotes += tokens;
+        questionVotes[questionId][msg.sender] = Vote(msg.sender, tokens, false);
         emit QuestionUpvoted(questionId, msg.sender, tokens);
     }
 
-    function postAnswer(uint256 questionId, string calldata content) external {
+    function postAnswer(uint256 questionId, string calldata content, uint256 tokens) external {
         require(
             block.timestamp <= questions[questionId].createdAt + answerDeadline,
             "Answer deadline has passed"
         );
-        answers[questionId].push(Answer(msg.sender, content, 0, 0));
-        emit AnswerPosted(questionId, msg.sender, content);
+        require(
+            token.transferFrom(msg.sender, address(this), tokens),
+            "Failed to transfer tokens"
+        );
+        uint256 id = nextAnswerId++;
+        answers[questionId][id] = Answer(id, msg.sender, content, 0, tokens, false);
+        emit AnswerPosted(questionId, id, msg.sender, content, tokens);
     }
 
     function upvoteAnswer(
@@ -101,27 +122,50 @@ contract QnA {
         emit AnswerUpvoted(questionId, answerId, msg.sender, tokens);
     }
 
-    function claimBounty(uint256 questionId) external {
+    function claimReserveQuestion(uint256 questionId) external {
         Question storage question = questions[questionId];
-        require(!question.bountyClaimed, "Bounty already claimed");
+        require(!question.rewardClaimed, "reserve already claimed");
         require(
             block.timestamp > question.createdAt + answerDeadline,
             "Deadline not yet passed"
         );
+        require(question.asker == msg.sender, "Only asker can claim reserve");
+        require(
+            question.upvotes >= question.reserve,
+            "Question did not get enough upvotes"
+        );
 
-        token.transfer(question.asker, question.bounty);
-        question.bountyClaimed = true;
+        token.transfer(question.asker, question.reserve);
+        question.rewardClaimed = true;
     }
 
-    function claimParticipationRewards() external {
+    function claimReserveAnswer(uint256 questionId, uint256 answerId) external {
+        Answer storage answer = answers[questionId][answerId];
+        require(!answer.rewardClaimed, "reward already claimed");
         require(
-            block.timestamp > rewardClaimDeadline,
-            "Reward claim period not yet started"
+            block.timestamp > questions[questionId].createdAt + answerDeadline,
+            "Deadline not yet passed"
         );
-        uint256 reward = participationReward[msg.sender];
-        require(reward > 0, "No rewards available");
+        require(answer.replier == msg.sender, "Only replier can claim reward");
+        require(
+            answer.upvotes >= answer.reserve,
+            "Answer did not get enough upvotes"
+        );
 
-        token.transfer(msg.sender, reward * 2); // Double the tokens
-        participationReward[msg.sender] = 0; // Reset the reward balance
+        token.transfer(answer.replier, answer.reserve);
+        answer.rewardClaimed = true;
+    }
+
+    function claimReserveVoteQuestion(uint256 questionId) external {
+        Vote storage vote = questionVotes[questionId][msg.sender];
+        require(!vote.rewardClaimed, "reward already claimed");
+        require(
+            block.timestamp > questions[questionId].createdAt + answerDeadline,
+            "Deadline not yet passed"
+        );
+        require(vote.voter == msg.sender, "Only voter can claim reward");
+
+        token.transfer(vote.voter, vote.tokens);
+        vote.rewardClaimed = true;
     }
 }
