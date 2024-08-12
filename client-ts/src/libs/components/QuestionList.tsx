@@ -35,7 +35,7 @@ const QuestionListItem = ({ question, handleQuestionClick }: QuestionListItemPro
           secondary={
             <React.Fragment>
               <Typography sx={{ display: 'inline' }} component="span" variant="body2" color="text.primary">
-                {'Akser: ' + asker}
+                {'Asker: ' + asker}
               </Typography>
               {` — ${question.createdAt}`}
             </React.Fragment>

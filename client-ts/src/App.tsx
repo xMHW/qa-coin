@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Box } from '@mui/material';
 import MetamaskHeader from './libs/components/MetamaskHeader';
+import Sidebar from './libs/components/Sidebar';
 import { useWeb3React } from '@web3-react/core';
 import { connectors } from './libs/connectors';
 import QnA from './libs/components/QnA';
@@ -31,8 +32,11 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <MetamaskHeader QaCoinContract={QaCoinContract} />
-      <Box sx={{ display: 'flex' }}>
-        <QnA QnAcontract={QnAcontract} QaCoinContract={QaCoinContract} />
+      <Box sx={{display: 'flex', height: '100vh'}}>
+        <Sidebar />
+        <Box sx={{ display: 'flex' }}>
+          <QnA QnAcontract={QnAcontract} QaCoinContract={QaCoinContract} />
+        </Box>
       </Box>
     </ThemeProvider>
   );
