@@ -1,6 +1,5 @@
-import { EventFilter, ethers } from 'ethers';
-
 export const QnAAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
+// export const QnAAddress = '0x8B5820801e751920bCC3A9B862bba53154B200D1';
 export const QnAAbi = [
   {
     "inputs": [
@@ -17,7 +16,7 @@ export const QnAAbi = [
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "questionId",
         "type": "uint256"
@@ -54,13 +53,13 @@ export const QnAAbi = [
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "questionId",
         "type": "uint256"
       },
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "answerId",
         "type": "uint256"
@@ -70,12 +69,6 @@ export const QnAAbi = [
         "internalType": "address",
         "name": "voter",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "tokens",
-        "type": "uint256"
       }
     ],
     "name": "AnswerUpvoted",
@@ -116,7 +109,7 @@ export const QnAAbi = [
     "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
         "name": "questionId",
         "type": "uint256"
@@ -126,12 +119,6 @@ export const QnAAbi = [
         "internalType": "address",
         "name": "voter",
         "type": "address"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "tokens",
-        "type": "uint256"
       }
     ],
     "name": "QuestionUpvoted",
@@ -156,66 +143,32 @@ export const QnAAbi = [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      },
-    ],
-    name: 'answerUpvotesOfQuestion',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-    name: 'answerUpvotesOfQuestionSet',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
       }
     ],
-    "name": "answerVotes",
+    "name": "answerUpvotesOfQuestion",
     "outputs": [
       {
-        "internalType": "address",
-        "name": "voter",
-        "type": "address"
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
       {
         "internalType": "uint256",
-        "name": "tokens",
+        "name": "",
         "type": "uint256"
-      },
+      }
+    ],
+    "name": "answerUpvotesOfQuestionSet",
+    "outputs": [
       {
         "internalType": "bool",
-        "name": "rewardClaimed",
+        "name": "",
         "type": "bool"
       }
     ],
@@ -266,6 +219,11 @@ export const QnAAbi = [
         "internalType": "bool",
         "name": "rewardClaimed",
         "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "createdAt",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -284,7 +242,7 @@ export const QnAAbi = [
         "type": "uint256"
       }
     ],
-    "name": "claimReserveAnswer",
+    "name": "claimRewardAnswer",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -297,20 +255,7 @@ export const QnAAbi = [
         "type": "uint256"
       }
     ],
-    "name": "claimReserveQuestion",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "questionId",
-        "type": "uint256"
-      }
-    ],
-    "name": "claimReserveVoteQuestion",
+    "name": "claimRewardQuestion",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -388,40 +333,6 @@ export const QnAAbi = [
         "internalType": "uint256",
         "name": "",
         "type": "uint256"
-      },
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "questionVotes",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "voter",
-        "type": "address"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tokens",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "rewardClaimed",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
       }
     ],
     "name": "questions",
@@ -466,6 +377,25 @@ export const QnAAbi = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "recentUpvoteRewardTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "token",
     "outputs": [
@@ -488,11 +418,6 @@ export const QnAAbi = [
       {
         "internalType": "uint256",
         "name": "answerId",
-        "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tokens",
         "type": "uint256"
       }
     ],
@@ -520,11 +445,6 @@ export const QnAAbi = [
         "internalType": "uint256",
         "name": "questionId",
         "type": "uint256"
-      },
-      {
-        "internalType": "uint256",
-        "name": "tokens",
-        "type": "uint256"
       }
     ],
     "name": "upvoteQuestion",
@@ -533,11 +453,8 @@ export const QnAAbi = [
     "type": "function"
   }
 ];
-export const QuestionPostedFilter: EventFilter = {
-  address: QnAAddress,
-  topics: [ethers.utils.id('QuestionPosted')],
-};
 export const QaCoinAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+// export const QaCoinAddress = '0xF892Ef13f996587D8F59C3a8C4f9beA049d1C5BD';
 export const QaCoinAbi = [
   {
     "inputs": [],

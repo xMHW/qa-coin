@@ -23,7 +23,11 @@ function App() {
 
   useEffect(() => {
     const web3Provider = library?.getSigner();
+    if (!web3Provider) return;
     const QnAcontract = new ethers.Contract(QnAAddress, QnAAbi, web3Provider);
+    QnAcontract.on('QuestionUpvoted', (questionId: number, upvoter: string) => {
+      console.log(questionId, upvoter, 'QuestionUpvoted');
+    });
     setQnAContract(QnAcontract);
     const QaCoinContract = new ethers.Contract(QaCoinAddress, QaCoinAbi, web3Provider);
     setQaCoinContract(QaCoinContract);

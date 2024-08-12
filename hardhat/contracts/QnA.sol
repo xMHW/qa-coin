@@ -23,7 +23,9 @@ contract QnA {
         uint256 upvotes;
         uint256 reserve;
         bool rewardClaimed;
+        uint256 createdAt;
     }
+
 
     uint256 public nextAnswerId;
     Question[] public questions;
@@ -41,11 +43,11 @@ contract QnA {
         string content,
         uint256 reserve 
     );
-    event QuestionUpvoted(uint256 questionId, address voter);
-    event AnswerPosted(uint256 questionId, uint256 answerId, address replier, string content, uint256 reserve);
+    event QuestionUpvoted(uint256 indexed questionId, address voter);
+    event AnswerPosted(uint256 indexed questionId, uint256 answerId, address replier, string content, uint256 reserve);
     event AnswerUpvoted(
-        uint256 questionId,
-        uint256 answerId,
+        uint256 indexed questionId,
+        uint256 indexed answerId,
         address voter
     );
 
@@ -90,7 +92,7 @@ contract QnA {
             "Failed to transfer tokens"
         );
         uint256 id = nextAnswerId++;
-        answers[questionId][id] = Answer(id, msg.sender, content, 0, tokens, false);
+        answers[questionId][id] = Answer(id, msg.sender, content, 0, tokens, false, block.timestamp);
         emit AnswerPosted(questionId, id, msg.sender, content, tokens);
     }
 
