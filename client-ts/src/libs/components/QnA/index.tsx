@@ -1,7 +1,7 @@
 import { useWeb3React } from '@web3-react/core';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Contract, ethers } from 'ethers';
-import { Box, Button, Grid } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { formatEther } from 'ethers/lib/utils';
 import { Question } from '../../types/Question';
 import QuestionFeed from '../QuestionFeed';
@@ -178,52 +178,71 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
   };
 
   return (
-    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', m: 3, height: '100vh' }}>
-      <Box sx={{ mb: 2 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button 
-              variant="contained" 
-              onClick={handleFetchQuestions}
-              sx={{bgcolor: '#fff', color: '#938AF8'}}
-            >
-              Fetch Questions
-            </Button>
-          </Grid>
-          <Grid item xs={6}>
-            {/* Empty grid item */}
-          </Grid>
-        </Grid>
-      </Box>
-      <Box sx={{ flexGrow: 1, display: 'flex' }}>
-        <Grid container spacing={2}>
-          <Grid item xs={6} sx={{ height: '100%'}}>
-            <QuestionFeed
-              questions={questions}
-              handleQuestionClick={handleQuestionClick}
-            />
-          </Grid>
-          <Grid item xs={6} sx={{ height: '100%' }}>
-            <QuestionForm
-              handlePostQuestion={handlePostQuestion}
-              postLoading={postLoading}
-            />
-          </Grid>
-        </Grid>
-      </Box>
-      <QuestionModal
-        open={modalOpen}
-        onClose={() => {
-          setModalOpen(false);
-          setModalQuestion(null);
-        }}
-        question={modalQuestion}
-        handleUpvote={handleUpvote}
-        handlePostAnswer={handlePostAnswer}
-        handleUpvoteAnswer={handleUpvoteAnswer}
-        handleClaimRewardQuestion={handleClaimRewardQuestion}
-        handleClaimRewardAnswer={handleClaimRewardAnswer}
-      />
+    <Box sx={{width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', m: 3 }}>
+      {account ? (
+        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', height: '100vh' }}>
+          <Box sx={{ mb: 2 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Button 
+                  variant="contained" 
+                  onClick={handleFetchQuestions}
+                  sx={{bgcolor: '#fff', color: '#938AF8'}}
+                >
+                  Fetch Questions
+                </Button>
+              </Grid>
+              <Grid item xs={6}>
+                {/* Empty grid item */}
+              </Grid>
+            </Grid>
+          </Box>
+          <Box sx={{ flexGrow: 1, display: 'flex' }}>
+            <Grid container spacing={2}>
+              <Grid item xs={6} sx={{ height: '100%'}}>
+                <QuestionFeed
+                  questions={questions}
+                  handleQuestionClick={handleQuestionClick}
+                />
+              </Grid>
+              <Grid item xs={6} sx={{ height: '100%' }}>
+                <QuestionForm
+                  handlePostQuestion={handlePostQuestion}
+                  postLoading={postLoading}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+          <QuestionModal
+            open={modalOpen}
+            onClose={() => {
+              setModalOpen(false);
+              setModalQuestion(null);
+            }}
+            question={modalQuestion}
+            handleUpvote={handleUpvote}
+            handlePostAnswer={handlePostAnswer}
+            handleUpvoteAnswer={handleUpvoteAnswer}
+            handleClaimRewardQuestion={handleClaimRewardQuestion}
+            handleClaimRewardAnswer={handleClaimRewardAnswer}
+          />
+        </Box>
+      ): (
+        <Box sx={{ mt: '-10%' }}>
+          <Typography 
+            variant="h4" 
+            component="h2"
+            sx={{
+              color: '#7B73E7',  
+              fontWeight: 'bold',
+              textAlign: 'center',
+              textShadow: '1px 1px 2px rgba(0,0,0,0.1)' 
+            }}
+          >
+            Connect your wallet to view the class
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 };
