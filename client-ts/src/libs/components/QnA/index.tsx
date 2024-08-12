@@ -85,6 +85,13 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
     setModalOpen(true);
   };
 
+  const handleUpvote = async (question: Question) => {
+    if (!QnAcontract || !account) return;
+    const tx = await QnAcontract.upvoteQuestion(question.id);
+    await tx.wait();
+    handleFetchQuestions();
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Button sx={{ mt: 5, width: 200 }} color="inherit" variant="outlined" onClick={handleFetchQuestions}>
@@ -134,6 +141,7 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
           setModalQuestion(null);
         }}
         question={modalQuestion}
+        handleUpvote={handleUpvote}
       />
     </Box>
   );

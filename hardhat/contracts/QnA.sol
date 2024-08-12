@@ -14,6 +14,7 @@ contract QnA {
         uint256 createdAt;
         bool rewardClaimed;
         uint256 upvotes;
+        address[] upvoters;
     }
 
     struct Answer {
@@ -23,7 +24,9 @@ contract QnA {
         uint256 upvotes;
         uint256 reserve;
         bool rewardClaimed;
+        address[] upvoters;
     }
+
 
     uint256 public nextAnswerId;
     Question[] public questions;
@@ -64,7 +67,7 @@ contract QnA {
         );
         uint256 id = questions.length;
         questions.push(
-            Question(id, msg.sender, content, reserve, block.timestamp, false, 0)
+            Question(id, msg.sender, content, reserve, block.timestamp, false, 0, new address[](0))
         );
         answerUpvotesOfQuestionSet[id] = false;
         emit QuestionPosted(id, msg.sender, content, reserve);
@@ -77,6 +80,7 @@ contract QnA {
         );
         Question storage question = questions[questionId];
         question.upvotes += 1;
+        question.upvoters.push(msg.sender);
         emit QuestionUpvoted(questionId, msg.sender);
     }
 
@@ -90,7 +94,7 @@ contract QnA {
             "Failed to transfer tokens"
         );
         uint256 id = nextAnswerId++;
-        answers[questionId][id] = Answer(id, msg.sender, content, 0, tokens, false);
+        answers[questionId][id] = Answer(id, msg.sender, content, 0, tokens, false, new address[](0));
         emit AnswerPosted(questionId, id, msg.sender, content, tokens);
     }
 
@@ -104,6 +108,7 @@ contract QnA {
         );
         Answer storage answer = answers[questionId][answerId];
         answer.upvotes += 1;
+        answer.upvoters.push(msg.sender);
         if (!answerUpvotesOfQuestionSet[questionId]) {
             answerUpvotesOfQuestionSet[questionId] = true;
             answerUpvotesOfQuestion[questionId] = answerId;

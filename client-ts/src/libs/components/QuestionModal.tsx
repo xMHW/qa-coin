@@ -1,5 +1,6 @@
-import React from 'react';
-import { Box, Button, Typography, Modal } from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Button, Typography, Modal, Divider } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { Question } from '../types/Question';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
@@ -7,6 +8,7 @@ interface QuestionModalProps {
   open: boolean;
   onClose: () => void;
   question: Question | null;
+  handleUpvote: (question: Question) => void;
 }
 
 const style = {
@@ -21,18 +23,30 @@ const style = {
   p: 4,
 };
 
-const QuestionModal = ({ open, onClose, question }: QuestionModalProps) => {
-  // console.log(question, 'question');
+const QuestionModal = ({ open, onClose, question, handleUpvote }: QuestionModalProps) => {
+  const [upvoteLoading, setUpvoteLoading] = useState<boolean>(false);
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
         <Typography id="modal-modal-title" variant="h6" component="h3">
           Question: {question?.content}
         </Typography>
+        <Divider sx={{ m: 2 }} />
         {question?.isMine ? (
           <Typography>Claim Amount: {question?.claimAmount}</Typography>
         ) : (
-          <Button onClick={onClose}>Upvote</Button>
+          <LoadingButton
+            variant="outlined"
+            onClick={() => {
+              setUpvoteLoading(true);
+              handleUpvote(question!);
+              setUpvoteLoading(false);
+            }}
+            loading={upvoteLoading}
+          >
+            <ThumbUpIcon sx={{ mr: 1 }} />
+            Upvote
+          </LoadingButton>
         )}
       </Box>
     </Modal>
