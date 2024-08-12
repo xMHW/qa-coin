@@ -36,7 +36,7 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
           {
             id: question.id.toNumber(),
             content: question.content,
-            claimAmount: formatEther(question.bounty),
+            claimAmount: formatEther(question.reserve),
             upvotes: question.upvotes.toNumber(),
             createdAt: new Date(question.createdAt.toNumber() * 1000).toLocaleString(),
             asker: question.asker,

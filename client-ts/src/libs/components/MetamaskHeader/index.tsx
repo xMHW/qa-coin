@@ -29,9 +29,14 @@ const MetamaskHeader = ({ QaCoinContract }: MetamaskHeaderProps) => {
 
   const mintToken = async () => {
     if (!QaCoinContract || !account) return;
-    const tx = await QaCoinContract.mintTokens();
-    console.log(tx);
-    await tx.wait();
+    try {
+      const tx = await QaCoinContract.mintTokens();
+      console.log("Transaction sent:", tx.hash);
+      const receipt = await tx.wait();
+      console.log("Transaction confirmed:", receipt);
+    } catch (error) {
+      console.error("Error minting tokens:", error);
+    }
   };
 
   useEffect(() => {
@@ -64,7 +69,7 @@ const MetamaskHeader = ({ QaCoinContract }: MetamaskHeaderProps) => {
             </>
           )}
           {chainId ? <Typography sx={{ mr: 2 }}>Connected network: {chainId?.toString()}</Typography> : null}
-          {balance !== '0' ? (
+          {balance !== '0.0' ? (
             <Typography>Balance: {balance}</Typography>
           ) : account ? (
             <Button color="inherit" onClick={mintToken}>
