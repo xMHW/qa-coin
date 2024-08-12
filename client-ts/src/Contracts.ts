@@ -1,5 +1,5 @@
 // export const QnAAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
-export const QnAAddress = '0x8B5820801e751920bCC3A9B862bba53154B200D1';
+export const QnAAddress = '0xffb078C041Fa93360030e2044DA995274D98f3a9';
 export const QnAAbi = [
   {
     inputs: [
@@ -449,7 +449,7 @@ export const QnAAbi = [
   },
 ];
 // export const QaCoinAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
-export const QaCoinAddress = '0xF892Ef13f996587D8F59C3a8C4f9beA049d1C5BD';
+export const QaCoinAddress = '0x160FC635F6B5fAA4F5d50eF180aE14F16F289963';
 export const QaCoinAbi = [
   {
     inputs: [],

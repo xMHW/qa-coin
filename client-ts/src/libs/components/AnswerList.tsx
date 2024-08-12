@@ -59,9 +59,9 @@ const AnswerListItem = ({
           sx={{ ml: 4, width: 400, mb: 1 }}
           variant="outlined"
           color="secondary"
-          onClick={() => {
+          onClick={async () => {
             setUpvoteLoading(true);
-            handleUpvote(question, answer);
+            await handleUpvote(question, answer);
             setUpvoteLoading(false);
           }}
           loading={upvoteLoading}
@@ -76,9 +76,9 @@ const AnswerListItem = ({
           sx={{ ml: 4, width: 400, mb: 1 }}
           variant="outlined"
           color="secondary"
-          onClick={() => {
+          onClick={async () => {
             setRewardLoading(true);
-            handleClaimReward(question, answer);
+            await handleClaimReward(question, answer);
             setRewardLoading(false);
           }}
           loading={rewardLoading}
