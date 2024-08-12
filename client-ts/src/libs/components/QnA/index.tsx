@@ -9,15 +9,17 @@ import { Question } from '../../types/Question';
 import QuestionList from '../QuestionList';
 import QuestionModal from '../QuestionModal';
 import { Answer } from '../../types/Answer';
+import { useSetRecoilState } from 'recoil';
+import { fetchBalanceState } from '../../../recoil/fetchBalanceState';
 
 interface QnAProps {
   QnAcontract: Contract | null;
   QaCoinContract: Contract | null;
 }
 
-// const VOTE_DURATION = 60 * 30 * 1000; // 30 minutes
+// const VOTE_DURATION = 60 * 2 * 1000; // 30 minutes
 const VOTE_DURATION = 60 * 60 * 24 * 3 * 1000; // 3 days
-// const ANSWER_DURATION = 60 * 60 * 1000; // 1 hour
+// const ANSWER_DURATION = 60 * 4 * 1000; // 1 hour
 const ANSWER_DURATION = 60 * 60 * 24 * 7 * 1000; // 1 week
 
 const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
@@ -29,6 +31,7 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [modalQuestion, setModalQuestion] = useState<Question | null>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const setFetchBalanceRequest = useSetRecoilState(fetchBalanceState);
 
   const handleFetchQuestions = useCallback(async () => {
     if (!QnAcontract) return;
@@ -106,13 +109,13 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
     setPostLoading(true);
     const claimAmountBigNumber = ethers.utils.parseEther(claimAmount.toString());
     const allowance = await QaCoinContract.allowance(account, QnAcontract.address);
-    console.log(formatEther(allowance), 'allowance');
     if (allowance.lt(claimAmountBigNumber)) {
       const tx = await QaCoinContract.approve(QnAcontract.address, claimAmountBigNumber);
       await tx.wait();
     }
     const tx2 = await QnAcontract.postQuestion(question, claimAmountBigNumber);
     await tx2.wait();
+    setFetchBalanceRequest(true);
     setPostLoading(false);
   };
 
@@ -139,6 +142,7 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
     const tx2 = await QnAcontract.postAnswer(question.id, answer, claimAmountBigNumber);
     await tx2.wait();
     handleFetchQuestions();
+    setPostLoading(false);
   };
 
   const handleUpvoteAnswer = async (question: Question, answer: Answer) => {
@@ -153,13 +157,19 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
     const tx = await QnAcontract.claimRewardQuestion(question.id);
     await tx.wait();
     handleFetchQuestions();
+    setFetchBalanceRequest(true);
   };
 
   const handleClaimRewardAnswer = async (question: Question, answer: Answer) => {
     if (!QnAcontract || !account) return;
-    const tx = await QnAcontract.claimRewardAnswer(question.id, answer.id);
-    await tx.wait();
-    handleFetchQuestions();
+    try {
+      const tx = await QnAcontract.claimRewardAnswer(question.id, answer.id);
+      await tx.wait();
+      handleFetchQuestions();
+      setFetchBalanceRequest(true);
+    } catch (e) {
+      console.error(e, 'Failed to claim reward');
+    }
   };
 
   return (
