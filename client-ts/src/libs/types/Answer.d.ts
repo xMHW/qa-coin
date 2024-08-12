@@ -1,17 +1,12 @@
-import { Answer } from './Answer';
-
-export type Question = {
+export type Answer = {
   id: number;
   content: string;
   claimAmount: string;
   upvotes: number;
   createdAt: string;
-  asker: string;
+  replier: string;
   isMine: boolean;
   upvoters: string[];
   upvoted: boolean;
-  answers: Answer[];
-  voteDeadline: Date;
-  answerDeadline: Date;
   rewardClaimed: boolean;
 };

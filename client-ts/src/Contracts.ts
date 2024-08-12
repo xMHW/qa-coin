@@ -1,5 +1,3 @@
-import { EventFilter, ethers } from 'ethers';
-
 export const QnAAddress = '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512';
 // export const QnAAddress = '0x8B5820801e751920bCC3A9B862bba53154B200D1';
 export const QnAAbi = [
@@ -18,7 +16,7 @@ export const QnAAbi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: 'uint256',
         name: 'questionId',
         type: 'uint256',
@@ -55,13 +53,13 @@ export const QnAAbi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: 'uint256',
         name: 'questionId',
         type: 'uint256',
       },
       {
-        indexed: false,
+        indexed: true,
         internalType: 'uint256',
         name: 'answerId',
         type: 'uint256',
@@ -111,7 +109,7 @@ export const QnAAbi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: 'uint256',
         name: 'questionId',
         type: 'uint256',
@@ -450,10 +448,6 @@ export const QnAAbi = [
     type: 'function',
   },
 ];
-export const QuestionPostedFilter: EventFilter = {
-  address: QnAAddress,
-  topics: [ethers.utils.id('QuestionPosted')],
-};
 export const QaCoinAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
 // export const QaCoinAddress = '0xF892Ef13f996587D8F59C3a8C4f9beA049d1C5BD';
 export const QaCoinAbi = [

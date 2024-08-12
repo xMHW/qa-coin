@@ -14,7 +14,6 @@ contract QnA {
         uint256 createdAt;
         bool rewardClaimed;
         uint256 upvotes;
-        address[] upvoters;
     }
 
     struct Answer {
@@ -24,7 +23,7 @@ contract QnA {
         uint256 upvotes;
         uint256 reserve;
         bool rewardClaimed;
-        address[] upvoters;
+        uint256 createdAt;
     }
 
 
@@ -44,11 +43,11 @@ contract QnA {
         string content,
         uint256 reserve 
     );
-    event QuestionUpvoted(uint256 questionId, address voter);
-    event AnswerPosted(uint256 questionId, uint256 answerId, address replier, string content, uint256 reserve);
+    event QuestionUpvoted(uint256 indexed questionId, address voter);
+    event AnswerPosted(uint256 indexed questionId, uint256 answerId, address replier, string content, uint256 reserve);
     event AnswerUpvoted(
-        uint256 questionId,
-        uint256 answerId,
+        uint256 indexed questionId,
+        uint256 indexed answerId,
         address voter
     );
 
@@ -67,7 +66,7 @@ contract QnA {
         );
         uint256 id = questions.length;
         questions.push(
-            Question(id, msg.sender, content, reserve, block.timestamp, false, 0, new address[](0))
+            Question(id, msg.sender, content, reserve, block.timestamp, false, 0)
         );
         answerUpvotesOfQuestionSet[id] = false;
         emit QuestionPosted(id, msg.sender, content, reserve);
@@ -80,7 +79,6 @@ contract QnA {
         );
         Question storage question = questions[questionId];
         question.upvotes += 1;
-        question.upvoters.push(msg.sender);
         emit QuestionUpvoted(questionId, msg.sender);
     }
 
@@ -94,7 +92,7 @@ contract QnA {
             "Failed to transfer tokens"
         );
         uint256 id = nextAnswerId++;
-        answers[questionId][id] = Answer(id, msg.sender, content, 0, tokens, false, new address[](0));
+        answers[questionId][id] = Answer(id, msg.sender, content, 0, tokens, false, block.timestamp);
         emit AnswerPosted(questionId, id, msg.sender, content, tokens);
     }
 
@@ -108,7 +106,6 @@ contract QnA {
         );
         Answer storage answer = answers[questionId][answerId];
         answer.upvotes += 1;
-        answer.upvoters.push(msg.sender);
         if (!answerUpvotesOfQuestionSet[questionId]) {
             answerUpvotesOfQuestionSet[questionId] = true;
             answerUpvotesOfQuestion[questionId] = answerId;
