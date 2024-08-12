@@ -10,6 +10,7 @@ import { useRecoilState } from 'recoil';
 import { balanceState } from '../../../recoil/balanceState';
 import { formatEther } from 'ethers/lib/utils';
 import ProfileModal from '../ProfileModal';
+import { fetchBalanceState } from '../../../recoil/fetchBalanceState';
 
 interface MetamaskHeaderProps {
   QaCoinContract: Contract | null;
@@ -18,6 +19,7 @@ interface MetamaskHeaderProps {
 const MetamaskHeader = ({ QaCoinContract }: MetamaskHeaderProps) => {
   const { account, chainId, activate, active, deactivate } = useWeb3React();
   const [balance, setBalance] = useRecoilState(balanceState);
+  const [fetchBalanceRequest, setFetchBalanceRequest] = useRecoilState(fetchBalanceState);
   const [mintLoading, setMintLoading] = useState<boolean>(false);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const handleConnectWallet = () => {
@@ -53,10 +55,11 @@ const MetamaskHeader = ({ QaCoinContract }: MetamaskHeaderProps) => {
           console.error(e, 'Can not fetch balance');
           setBalance(null);
         }
+        setFetchBalanceRequest(false);
       };
       fetchBalance();
     }
-  }, [QaCoinContract, account, setBalance, mintLoading]);
+  }, [QaCoinContract, account, setBalance, mintLoading, fetchBalanceRequest, setFetchBalanceRequest]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

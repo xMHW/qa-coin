@@ -5,7 +5,7 @@ import MetamaskHeader from './libs/components/MetamaskHeader';
 import Sidebar from './libs/components/Sidebar';
 import { useWeb3React } from '@web3-react/core';
 import { connectors } from './libs/connectors';
-import QnA from './libs/components/QnA2';
+import QnA from './libs/components/QnA';
 import { Contract, ethers } from 'ethers';
 import { QnAAddress, QnAAbi, QaCoinAddress, QaCoinAbi } from './Contracts';
 
