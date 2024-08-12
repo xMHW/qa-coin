@@ -115,6 +115,7 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
     }
     const tx2 = await QnAcontract.postQuestion(question, claimAmountBigNumber);
     await tx2.wait();
+    setFetchBalanceRequest(true);
     setPostLoading(false);
   };
 
@@ -141,6 +142,7 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
     const tx2 = await QnAcontract.postAnswer(question.id, answer, claimAmountBigNumber);
     await tx2.wait();
     handleFetchQuestions();
+    setPostLoading(false);
   };
 
   const handleUpvoteAnswer = async (question: Question, answer: Answer) => {
