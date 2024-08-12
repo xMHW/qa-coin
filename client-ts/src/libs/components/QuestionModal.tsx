@@ -22,7 +22,7 @@ interface QuestionModalProps {
   open: boolean;
   onClose: () => void;
   question: Question | null;
-  handleUpvote: (question: Question) => void;
+  handleUpvote: (question: Question) => Promise<void>;
   handlePostAnswer: (question: Question, answer: string, claimAmount: number) => Promise<void>;
   handleUpvoteAnswer: (question: Question, answer: Answer) => Promise<void>;
   handleClaimRewardQuestion: (question: Question) => Promise<void>;
@@ -68,23 +68,36 @@ const QuestionModal = ({
     }
   };
 
+  const handleUpvoteQuestionWrapper = async (question: Question) => {
+    setUpvoteLoading(true);
+    await handleUpvote(question);
+    setUpvoteLoading(false);
+    onClose();
+  };
+
   const handleUpvoteAnswerWrapper = async (question: Question, answer: Answer) => {
     await handleUpvoteAnswer(question, answer);
     onClose();
   };
 
+  const handleClaimRewardQuestionWrapper = async (question: Question) => {
+    setRewardLoading(true);
+    await handleClaimRewardQuestion(question);
+    setRewardLoading(false);
+    onClose();
+  };
+
   const handleClaimRewardWrapper = async (question: Question, answer: Answer) => {
+    setRewardLoading(true);
     await handleClaimRewardAnswer(question, answer);
+    setRewardLoading(false);
     onClose();
   };
 
   const asker = question?.isMine ? 'You' : question?.asker.substring(0, 8);
   const voteDeadlinePassed = question?.voteDeadline ? question?.voteDeadline < new Date(Date.now()) : true;
   const answerDeadlinePassed = question?.answerDeadline ? question?.answerDeadline < new Date(Date.now()) : true;
-  const voteRewardClaimable =
-    question?.rewardClaimed === false &&
-    question?.claimAmount &&
-    parseInt(question?.claimAmount) <= question?.upvotes * 1000;
+  const voteRewardClaimable = question?.claimAmount && parseInt(question?.claimAmount) <= question?.upvotes * 1000;
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -107,9 +120,7 @@ const QuestionModal = ({
             variant="outlined"
             color="primary"
             onClick={() => {
-              setRewardLoading(true);
-              handleClaimRewardQuestion(question);
-              setRewardLoading(false);
+              handleClaimRewardQuestionWrapper(question!);
             }}
             loading={rewardLoading}
             disabled={question.rewardClaimed}
@@ -126,9 +137,7 @@ const QuestionModal = ({
                 <LoadingButton
                   variant="outlined"
                   onClick={() => {
-                    setUpvoteLoading(true);
-                    handleUpvote(question!);
-                    setUpvoteLoading(false);
+                    handleUpvoteQuestionWrapper(question!);
                   }}
                   loading={upvoteLoading}
                   disabled={question?.upvoted}

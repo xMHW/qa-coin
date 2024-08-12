@@ -35,7 +35,9 @@ contract QnA {
     mapping(address => uint256) public recentUpvoteRewardTime;
 
     uint256 public upvoteDeadline = 3 days;
+    // uint256 public upvoteDeadline = 2 minutes;
     uint256 public answerDeadline = 7 days;
+    // uint256 public answerDeadline = 4 minutes;
 
     event QuestionPosted(
         uint256 questionId,
@@ -122,12 +124,12 @@ contract QnA {
         Question storage question = questions[questionId];
         require(!question.rewardClaimed, "reward already claimed");
         require(
-            block.timestamp > question.createdAt + answerDeadline,
+            block.timestamp > question.createdAt + upvoteDeadline,
             "Deadline not yet passed"
         );
         require(question.asker == msg.sender, "Only asker can claim reserve");
         require(
-            (question.upvotes * 100) >= question.reserve,
+            (question.upvotes * 100) < question.reserve,
             "Question did not get enough upvotes"
         );
 
