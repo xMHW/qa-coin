@@ -48,7 +48,7 @@ const QuestionListItem = ({ question, handleQuestionClick }: QuestionListItemPro
 
 const QuestionList = ({ questions, handleQuestionClick }: QuestionListProps) => {
   return (
-    <List sx={{ width: '100%', maxWidth: 500, bgcolor: 'background.paper' }}>
+    <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
       {questions.map((question, index) => (
         <React.Fragment key={index}>
           <QuestionListItem question={question} handleQuestionClick={handleQuestionClick} />

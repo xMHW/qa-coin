@@ -197,7 +197,7 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
       </Box>
       <Box sx={{ flexGrow: 1, display: 'flex' }}>
         <Grid container spacing={2}>
-          <Grid item xs={6} sx={{ height: '100%' }}>
+          <Grid item xs={6} sx={{ height: '100%'}}>
             <QuestionFeed
               questions={questions}
               handleQuestionClick={handleQuestionClick}

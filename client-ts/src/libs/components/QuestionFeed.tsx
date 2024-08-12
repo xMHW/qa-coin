@@ -15,7 +15,7 @@ const QuestionFeed: React.FC<QuestionFeedProps> = ({ questions, handleQuestionCl
   const paginatedQuestions = questions.slice((page-1)* QUESTIONS_PER_PAGE, page*QUESTIONS_PER_PAGE);
 
   return (
-    <Box>
+    <Box sx={{width: '100%'}}>
       <QuestionList questions={paginatedQuestions} handleQuestionClick={handleQuestionClick} />
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
           <Pagination
