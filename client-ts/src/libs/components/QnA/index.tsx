@@ -30,17 +30,18 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
       const questionsLength = await QnAcontract.questionLength();
       setQuestions([]);
       for (let i = 0; i < questionsLength.toNumber(); i++) {
-        const question = await QnAcontract.questions(i);
+        const fetchedQuestion = await QnAcontract.questions(i);
+        console.log(fetchedQuestion.id.toNumber(), 'question');
         setQuestions(prev => [
           ...prev,
           {
-            id: question.id.toNumber(),
-            content: question.content,
-            claimAmount: formatEther(question.reserve),
-            upvotes: question.upvotes.toNumber(),
-            createdAt: new Date(question.createdAt.toNumber() * 1000).toLocaleString(),
-            asker: question.asker,
-            isMine: account === question.asker,
+            id: fetchedQuestion.id.toNumber(),
+            content: fetchedQuestion.content,
+            claimAmount: formatEther(fetchedQuestion.reserve),
+            upvotes: fetchedQuestion.upvotes.toNumber(),
+            createdAt: new Date(fetchedQuestion.createdAt.toNumber() * 1000).toLocaleString(),
+            asker: fetchedQuestion.asker,
+            isMine: account === fetchedQuestion.asker,
           },
         ]);
       }
@@ -50,8 +51,9 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
   }, [QnAcontract, account]);
 
   useEffect(() => {
+    if (postLoading) return;
     handleFetchQuestions();
-  }, [QnAcontract, handleFetchQuestions]);
+  }, [QnAcontract, handleFetchQuestions, postLoading]);
 
   const handleClaimAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const amount = parseInt(e.target.value);

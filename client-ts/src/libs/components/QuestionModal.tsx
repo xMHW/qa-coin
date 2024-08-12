@@ -22,7 +22,7 @@ const style = {
 };
 
 const QuestionModal = ({ open, onClose, question }: QuestionModalProps) => {
-  console.log(question, 'question');
+  // console.log(question, 'question');
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
