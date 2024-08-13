@@ -107,9 +107,9 @@ const QuestionModal = ({
         </Typography>
         {` - Asker: ${asker}`}
         <br />
-        {` — Upvotes: ${question?.upvotes}`}
+        {` - Upvotes: ${question?.upvotes}`}
         <br />
-        {` — Claimed Token: ${question?.claimAmount}`}
+        {` - Claimed Token: ${question?.claimAmount}`}
         <br />
         {` - Question Vote Deadline: ${question?.voteDeadline.toLocaleString()}`}
         <br />

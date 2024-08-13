@@ -1,12 +1,11 @@
 import { useWeb3React } from '@web3-react/core';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Contract, ethers } from 'ethers';
-import { Box, Button, IconButton, InputAdornment, InputBase, Paper, TextField } from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { formatEther } from 'ethers/lib/utils';
 import { Question } from '../../types/Question';
-import QuestionList from '../QuestionList';
+import QuestionFeed from '../QuestionFeed';
+import QuestionForm from '../QuestionForm';
 import QuestionModal from '../QuestionModal';
 import { Answer } from '../../types/Answer';
 import { useSetRecoilState } from 'recoil';
@@ -104,19 +103,25 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
     }
   };
 
-  const handlePostQuestion = async () => {
-    if (!QnAcontract || !QaCoinContract || !account || !question || claimAmountError) return;
+  const handlePostQuestion = async (question: string, claimAmount: number) => {
+    if (!QnAcontract || !QaCoinContract || !account || !question) return;
     setPostLoading(true);
-    const claimAmountBigNumber = ethers.utils.parseEther(claimAmount.toString());
-    const allowance = await QaCoinContract.allowance(account, QnAcontract.address);
-    if (allowance.lt(claimAmountBigNumber)) {
-      const tx = await QaCoinContract.approve(QnAcontract.address, claimAmountBigNumber);
-      await tx.wait();
+    try {
+      const claimAmountBigNumber = ethers.utils.parseEther(claimAmount.toString());
+      const allowance = await QaCoinContract.allowance(account, QnAcontract.address);
+      if (allowance.lt(claimAmountBigNumber)) {
+        const tx = await QaCoinContract.approve(QnAcontract.address, claimAmountBigNumber);
+        await tx.wait();
+      }
+      const tx2 = await QnAcontract.postQuestion(question, claimAmountBigNumber);
+      await tx2.wait();
+      setFetchBalanceRequest(true);
+      await handleFetchQuestions(); // Fetch questions again after posting
+    } catch (error) {
+      console.error("Error posting question:", error);
+    } finally {
+      setPostLoading(false);
     }
-    const tx2 = await QnAcontract.postQuestion(question, claimAmountBigNumber);
-    await tx2.wait();
-    setFetchBalanceRequest(true);
-    setPostLoading(false);
   };
 
   const handleQuestionClick = (question: Question) => {
@@ -173,60 +178,71 @@ const QnA = ({ QnAcontract, QaCoinContract }: QnAProps) => {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Button sx={{ mt: 5, width: 200 }} color="inherit" variant="outlined" onClick={handleFetchQuestions}>
-        Fetch Questions
-      </Button>
-      <Box sx={{ height: 20 }} />
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Paper component="form" sx={{ ml: 5, p: '2px 4px', display: 'flex', alignItems: 'center', width: 1200 }}>
-          <InputBase
-            onChange={e => setQuestion(e.target.value)}
-            sx={{ ml: 1, flex: 1 }}
-            placeholder="Input your question here"
-            inputProps={{ 'aria-label': 'Input your question here"' }}
-          />
-          <IconButton disabled type="button" sx={{ p: '10px' }} aria-label="Post">
-            <QuestionMarkIcon />
-          </IconButton>
-        </Paper>
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <TextField
-            label="Claim token amount"
-            id="outlined-start-adornment"
-            sx={{ m: 2, width: '25ch' }}
-            InputProps={{
-              endAdornment: <InputAdornment position="start">token</InputAdornment>,
+    <Box sx={{width: '100%', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center', m: 3 }}>
+      {account ? (
+        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', height: '100vh' }}>
+          <Box sx={{ mb: 2 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Button 
+                  variant="contained" 
+                  onClick={handleFetchQuestions}
+                  sx={{bgcolor: '#fff', color: '#938AF8'}}
+                >
+                  Fetch Questions
+                </Button>
+              </Grid>
+              <Grid item xs={6}>
+                {/* Empty grid item */}
+              </Grid>
+            </Grid>
+          </Box>
+          <Box sx={{ flexGrow: 1, display: 'flex' }}>
+            <Grid container spacing={2}>
+              <Grid item xs={6} sx={{ height: '100%'}}>
+                <QuestionFeed
+                  questions={questions}
+                  handleQuestionClick={handleQuestionClick}
+                />
+              </Grid>
+              <Grid item xs={6} sx={{ height: '100%' }}>
+                <QuestionForm
+                  handlePostQuestion={handlePostQuestion}
+                  postLoading={postLoading}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+          <QuestionModal
+            open={modalOpen}
+            onClose={() => {
+              setModalOpen(false);
+              setModalQuestion(null);
             }}
-            onChange={handleClaimAmountChange}
-            error={claimAmountError}
-            helperText={'Amount must be 100~1000'}
+            question={modalQuestion}
+            handleUpvote={handleUpvote}
+            handlePostAnswer={handlePostAnswer}
+            handleUpvoteAnswer={handleUpvoteAnswer}
+            handleClaimRewardQuestion={handleClaimRewardQuestion}
+            handleClaimRewardAnswer={handleClaimRewardAnswer}
           />
-          <LoadingButton
-            sx={{ width: 200 }}
-            color="secondary"
-            variant="outlined"
-            onClick={handlePostQuestion}
-            loading={postLoading}
-          >
-            Post Question
-          </LoadingButton>
         </Box>
-      </Box>
-      <QuestionList questions={questions} handleQuestionClick={handleQuestionClick} />
-      <QuestionModal
-        open={modalOpen}
-        onClose={() => {
-          setModalOpen(false);
-          setModalQuestion(null);
-        }}
-        question={modalQuestion}
-        handleUpvote={handleUpvote}
-        handlePostAnswer={handlePostAnswer}
-        handleUpvoteAnswer={handleUpvoteAnswer}
-        handleClaimRewardQuestion={handleClaimRewardQuestion}
-        handleClaimRewardAnswer={handleClaimRewardAnswer}
-      />
+      ): (
+        <Box sx={{ mt: '-10%' }}>
+          <Typography 
+            variant="h4" 
+            component="h2"
+            sx={{
+              color: '#7B73E7',  
+              fontWeight: 'bold',
+              textAlign: 'center',
+              textShadow: '1px 1px 2px rgba(0,0,0,0.1)' 
+            }}
+          >
+            Connect your wallet to view the class
+          </Typography>
+        </Box>
+      )}
     </Box>
   );
 };

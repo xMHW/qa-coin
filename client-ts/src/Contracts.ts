@@ -2,805 +2,810 @@
 export const QnAAddress = '0xffb078C041Fa93360030e2044DA995274D98f3a9';
 export const QnAAbi = [
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'tokenAddress',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
+    "stateMutability": "nonpayable",
+    "type": "constructor"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'questionId',
-        type: 'uint256',
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "questionId",
+        "type": "uint256"
       },
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'answerId',
-        type: 'uint256',
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "answerId",
+        "type": "uint256"
       },
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'replier',
-        type: 'address',
+        "indexed": false,
+        "internalType": "address",
+        "name": "replier",
+        "type": "address"
       },
       {
-        indexed: false,
-        internalType: 'string',
-        name: 'content',
-        type: 'string',
+        "indexed": false,
+        "internalType": "string",
+        "name": "content",
+        "type": "string"
       },
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'reserve',
-        type: 'uint256',
-      },
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "reserve",
+        "type": "uint256"
+      }
     ],
-    name: 'AnswerPosted',
-    type: 'event',
+    "name": "AnswerPosted",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'questionId',
-        type: 'uint256',
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "questionId",
+        "type": "uint256"
       },
       {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'answerId',
-        type: 'uint256',
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "answerId",
+        "type": "uint256"
       },
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'voter',
-        type: 'address',
-      },
+        "indexed": false,
+        "internalType": "address",
+        "name": "voter",
+        "type": "address"
+      }
     ],
-    name: 'AnswerUpvoted',
-    type: 'event',
+    "name": "AnswerUpvoted",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'questionId',
-        type: 'uint256',
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "questionId",
+        "type": "uint256"
       },
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'asker',
-        type: 'address',
+        "indexed": false,
+        "internalType": "address",
+        "name": "asker",
+        "type": "address"
       },
       {
-        indexed: false,
-        internalType: 'string',
-        name: 'content',
-        type: 'string',
+        "indexed": false,
+        "internalType": "string",
+        "name": "content",
+        "type": "string"
       },
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'reserve',
-        type: 'uint256',
-      },
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "reserve",
+        "type": "uint256"
+      }
     ],
-    name: 'QuestionPosted',
-    type: 'event',
+    "name": "QuestionPosted",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'uint256',
-        name: 'questionId',
-        type: 'uint256',
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "questionId",
+        "type": "uint256"
       },
       {
-        indexed: false,
-        internalType: 'address',
-        name: 'voter',
-        type: 'address',
-      },
+        "indexed": false,
+        "internalType": "address",
+        "name": "voter",
+        "type": "address"
+      }
     ],
-    name: 'QuestionUpvoted',
-    type: 'event',
+    "name": "QuestionUpvoted",
+    "type": "event"
   },
   {
-    inputs: [],
-    name: 'answerDeadline',
-    outputs: [
+    "inputs": [],
+    "name": "answerDeadline",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    name: 'answerUpvotesOfQuestion',
-    outputs: [
+    "name": "answerUpvotesOfQuestion",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    name: 'answerUpvotesOfQuestionSet',
-    outputs: [
+    "name": "answerUpvotesOfQuestionSet",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       },
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    name: 'answers',
-    outputs: [
+    "name": "answers",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
       },
       {
-        internalType: 'address',
-        name: 'replier',
-        type: 'address',
+        "internalType": "address",
+        "name": "replier",
+        "type": "address"
       },
       {
-        internalType: 'string',
-        name: 'content',
-        type: 'string',
+        "internalType": "string",
+        "name": "content",
+        "type": "string"
       },
       {
-        internalType: 'uint256',
-        name: 'upvotes',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "upvotes",
+        "type": "uint256"
       },
       {
-        internalType: 'uint256',
-        name: 'reserve',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "reserve",
+        "type": "uint256"
       },
       {
-        internalType: 'bool',
-        name: 'rewardClaimed',
-        type: 'bool',
+        "internalType": "bool",
+        "name": "rewardClaimed",
+        "type": "bool"
       },
+      {
+        "internalType": "uint256",
+        "name": "createdAt",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'questionId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "questionId",
+        "type": "uint256"
       },
       {
-        internalType: 'uint256',
-        name: 'answerId',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "answerId",
+        "type": "uint256"
+      }
     ],
-    name: 'claimRewardAnswer',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "claimRewardAnswer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'questionId',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "questionId",
+        "type": "uint256"
+      }
     ],
-    name: 'claimRewardQuestion',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "claimRewardQuestion",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'nextAnswerId',
-    outputs: [
+    "inputs": [],
+    "name": "nextAnswerId",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'questionId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "questionId",
+        "type": "uint256"
       },
       {
-        internalType: 'string',
-        name: 'content',
-        type: 'string',
+        "internalType": "string",
+        "name": "content",
+        "type": "string"
       },
       {
-        internalType: 'uint256',
-        name: 'tokens',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "tokens",
+        "type": "uint256"
+      }
     ],
-    name: 'postAnswer',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "postAnswer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'string',
-        name: 'content',
-        type: 'string',
+        "internalType": "string",
+        "name": "content",
+        "type": "string"
       },
       {
-        internalType: 'uint256',
-        name: 'reserve',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "reserve",
+        "type": "uint256"
+      }
     ],
-    name: 'postQuestion',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "postQuestion",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'questionLength',
-    outputs: [
+    "inputs": [],
+    "name": "questionLength",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    name: 'questions',
-    outputs: [
+    "name": "questions",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: 'id',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "id",
+        "type": "uint256"
       },
       {
-        internalType: 'address',
-        name: 'asker',
-        type: 'address',
+        "internalType": "address",
+        "name": "asker",
+        "type": "address"
       },
       {
-        internalType: 'string',
-        name: 'content',
-        type: 'string',
+        "internalType": "string",
+        "name": "content",
+        "type": "string"
       },
       {
-        internalType: 'uint256',
-        name: 'reserve',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "reserve",
+        "type": "uint256"
       },
       {
-        internalType: 'uint256',
-        name: 'createdAt',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "createdAt",
+        "type": "uint256"
       },
       {
-        internalType: 'bool',
-        name: 'rewardClaimed',
-        type: 'bool',
+        "internalType": "bool",
+        "name": "rewardClaimed",
+        "type": "bool"
       },
       {
-        internalType: 'uint256',
-        name: 'upvotes',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "upvotes",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
-    name: 'recentUpvoteRewardTime',
-    outputs: [
+    "name": "recentUpvoteRewardTime",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'token',
-    outputs: [
+    "inputs": [],
+    "name": "token",
+    "outputs": [
       {
-        internalType: 'contract QaCoin',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "contract QaCoin",
+        "name": "",
+        "type": "address"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'questionId',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "questionId",
+        "type": "uint256"
       },
       {
-        internalType: 'uint256',
-        name: 'answerId',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "answerId",
+        "type": "uint256"
+      }
     ],
-    name: 'upvoteAnswer',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "upvoteAnswer",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'upvoteDeadline',
-    outputs: [
+    "inputs": [],
+    "name": "upvoteDeadline",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'uint256',
-        name: 'questionId',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "questionId",
+        "type": "uint256"
+      }
     ],
-    name: 'upvoteQuestion',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
+    "name": "upvoteQuestion",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
 ];
 // export const QaCoinAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
 export const QaCoinAddress = '0x160FC635F6B5fAA4F5d50eF180aE14F16F289963';
 export const QaCoinAbi = [
   {
-    inputs: [],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'spender',
-        type: 'address',
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
       },
       {
-        internalType: 'uint256',
-        name: 'allowance',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "allowance",
+        "type": "uint256"
       },
       {
-        internalType: 'uint256',
-        name: 'needed',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "needed",
+        "type": "uint256"
+      }
     ],
-    name: 'ERC20InsufficientAllowance',
-    type: 'error',
+    "name": "ERC20InsufficientAllowance",
+    "type": "error"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'sender',
-        type: 'address',
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
       },
       {
-        internalType: 'uint256',
-        name: 'balance',
-        type: 'uint256',
+        "internalType": "uint256",
+        "name": "balance",
+        "type": "uint256"
       },
       {
-        internalType: 'uint256',
-        name: 'needed',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "needed",
+        "type": "uint256"
+      }
     ],
-    name: 'ERC20InsufficientBalance',
-    type: 'error',
+    "name": "ERC20InsufficientBalance",
+    "type": "error"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'approver',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "approver",
+        "type": "address"
+      }
     ],
-    name: 'ERC20InvalidApprover',
-    type: 'error',
+    "name": "ERC20InvalidApprover",
+    "type": "error"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'receiver',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "receiver",
+        "type": "address"
+      }
     ],
-    name: 'ERC20InvalidReceiver',
-    type: 'error',
+    "name": "ERC20InvalidReceiver",
+    "type": "error"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'sender',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "sender",
+        "type": "address"
+      }
     ],
-    name: 'ERC20InvalidSender',
-    type: 'error',
+    "name": "ERC20InvalidSender",
+    "type": "error"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'spender',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      }
     ],
-    name: 'ERC20InvalidSpender',
-    type: 'error',
+    "name": "ERC20InvalidSpender",
+    "type": "error"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
+        "indexed": true,
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'spender',
-        type: 'address',
+        "indexed": true,
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
       },
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
     ],
-    name: 'Approval',
-    type: 'event',
+    "name": "Approval",
+    "type": "event"
   },
   {
-    anonymous: false,
-    inputs: [
+    "anonymous": false,
+    "inputs": [
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
       },
       {
-        indexed: true,
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
       },
       {
-        indexed: false,
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
     ],
-    name: 'Transfer',
-    type: 'event',
+    "name": "Transfer",
+    "type": "event"
   },
   {
-    inputs: [],
-    name: 'MINT_AMOUNT',
-    outputs: [
+    "inputs": [],
+    "name": "MINT_AMOUNT",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'owner',
-        type: 'address',
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
       },
       {
-        internalType: 'address',
-        name: 'spender',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
+      }
     ],
-    name: 'allowance',
-    outputs: [
+    "name": "allowance",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'spender',
-        type: 'address',
+        "internalType": "address",
+        "name": "spender",
+        "type": "address"
       },
       {
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
     ],
-    name: 'approve',
-    outputs: [
+    "name": "approve",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'account',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "account",
+        "type": "address"
+      }
     ],
-    name: 'balanceOf',
-    outputs: [
+    "name": "balanceOf",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'decimals',
-    outputs: [
+    "inputs": [],
+    "name": "decimals",
+    "outputs": [
       {
-        internalType: 'uint8',
-        name: '',
-        type: 'uint8',
-      },
+        "internalType": "uint8",
+        "name": "",
+        "type": "uint8"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
     ],
-    name: 'hasMinted',
-    outputs: [
+    "name": "hasMinted",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'mintTokens',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "inputs": [],
+    "name": "mintTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'name',
-    outputs: [
+    "inputs": [],
+    "name": "name",
+    "outputs": [
       {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'symbol',
-    outputs: [
+    "inputs": [],
+    "name": "symbol",
+    "outputs": [
       {
-        internalType: 'string',
-        name: '',
-        type: 'string',
-      },
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [],
-    name: 'totalSupply',
-    outputs: [
+    "inputs": [],
+    "name": "totalSupply",
+    "outputs": [
       {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
     ],
-    stateMutability: 'view',
-    type: 'function',
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
       },
       {
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
     ],
-    name: 'transfer',
-    outputs: [
+    "name": "transfer",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    inputs: [
+    "inputs": [
       {
-        internalType: 'address',
-        name: 'from',
-        type: 'address',
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
       },
       {
-        internalType: 'address',
-        name: 'to',
-        type: 'address',
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
       },
       {
-        internalType: 'uint256',
-        name: 'value',
-        type: 'uint256',
-      },
+        "internalType": "uint256",
+        "name": "value",
+        "type": "uint256"
+      }
     ],
-    name: 'transferFrom',
-    outputs: [
+    "name": "transferFrom",
+    "outputs": [
       {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
     ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
 ];
